@@ -1,0 +1,6 @@
+---
+# vars file for ansible-tinc (Ubuntu specific)
+
+tinc_packages:
+  - tinc
+tinc_service_name: tinc

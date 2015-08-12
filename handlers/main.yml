@@ -1,2 +1,10 @@
 ---
 # handlers file for ansible-tinc
+
+- name: restart tinc
+  service: name={{ tinc_service_name }} state=restarted
+  tags: tinc
+
+- name: reload tinc
+  service: name={{ tinc_service_name }} state=reloaded
+  tags: tinc

@@ -1,2 +1,47 @@
 ---
 # tasks file for ansible-tinc
+
+- name: Include distribution specific variables
+  include_vars: "{{ ansible_distribution }}.yml"
+  tags: tinc
+
+- include: CentOS.yml
+  when: ansible_distribution == "CentOS"
+  tags: tinc
+
+- include: Ubuntu.yml
+  when: ansible_distribution == "Ubuntu"
+  tags: tinc
+
+- include: Alpine.yml
+  when: ansible_distribution == "Alpine"
+  tags: tinc
+
+- name: Create tinc configuration
+  template: >
+    src=tinc.conf.j2
+    dest=/etc/tinc/tinc.conf
+    owner=root
+    group=root
+    mode=0644
+  notifies: reload tinc
+  tags: tinc
+
+- name: Create tinc host configuration
+  template: >
+    src=tinc.host.conf.j2
+    dest=/etc/tinc/hosts/tinc_host.conf
+    owner=root
+    group=root
+    mode=0644
+  notifies: reload tinc
+  tags: tinc
+
+- name: Create tinc nets.boot configuration
+  template: >
+    src=tinc.nets.boot.j2
+    dest=/etc/tinc/nets.boot
+    owner=root
+    group=root
+    mode=0644
+  tags: tinc
