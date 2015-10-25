@@ -1,21 +1,35 @@
 # {{ ansible_managed }}
 
 AddressFamily = {{ tinc_address_family }}
-#BindToAddress =
-{% if tinc_bind_to_interface != '' -%}
+{% if tinc_bind_to_address %}
+BindToAddress = {{ tinc_bind_to_address }} {{ tinc_bind_to_address_port }}
+{% endif %}
+{% if tinc_bind_to_interface %}
 BindToInterface = {{ tinc_bind_to_interface }}
 {% endif %}
 Broadcast = {{ tinc_broadcast }}
-#ConnectTo =
+{% if tinc_connect_to %}
+{% for name in tinc_connect_to %}
+ConnectTo = {{ name }}
+{% endfor %}
+{% endif %}
 DecrementTTL = {{ tinc_decrement_ttl }}
-#Device =
-#DeviceType =
+{% if tinc_device %}
+Device = {{ tinc_device }}
+{% endif %}
+{% if tinc_device_type %}
+DeviceType = {{ tinc_device_type }}
+{% endif %}
 DirectOnly = {{ tinc_direct_only }}
 Forwarding = {{ tinc_forwarding }}
-#GraphDumpFile =
+{% if tinc_graph_dump_file %}
+GraphDumpFile = {{ tinc_graph_dump_file }}
+{% endif %}
 Hostnames = {{ tinc_hostnames }}
 IffOneQueue = {{ tinc_iff_one_queue }}
-#Interface =
+{% if tinc_interface %}
+Interface = {{ tinc_interface }}
+{% endif %}
 KeyExpire = {{ tinc_key_expire }}
 LocalDiscovery = {{ tinc_local_discovery }}
 MACExpire = {{ tinc_mac_expire }}
@@ -26,12 +40,18 @@ PingInterval = {{ tinc_ping_interval }}
 PingTimeout = {{ tinc_ping_timeout }}
 PriorityInheritance = {{ tinc_priority_inheritance }}
 PrivateKeyFile = {{ tinc_private_key_file }}
-{% if tinc_process_priority != '' -%}
+{% if tinc_process_priority %}
 ProcessPriority = {{ tinc_process_priority }}
 {% endif %}
-#Proxy =
+{% if tinc_proxy %}
+Proxy = {{ tinc_proxy }}
+{% endif %}
 ReplayWindow = {{ tinc_replay_window }}
 StrictSubnets = {{ tinc_strict_subnets }}
 TunnelServer = {{ tinc_tunnel_server }}
-#UDPRcvBuf =
-#UDPSndBuf =
+{% if tinc_udp_rcv_buf %}
+UDPRcvBuf = {{ tinc_udp_rcv_buf }}
+{% endif %}
+{% if tinc_udp_snd_buf %}
+UDPSndBuf = {{ tinc_udp_snd_buf }}
+{% endif %}

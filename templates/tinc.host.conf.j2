@@ -1,6 +1,8 @@
 # {{ ansible_managed }}
 
-#Address =
+{% if tinc_host_address %}
+Address = {{ tinc_host_address }} {{ tinc_host_port }}
+{% endif %}
 Cipher = {{ tinc_host_cipher }}
 ClampMSS = {{ tinc_host_clamp_mss }}
 Compression = {{ tinc_host_compression }}
@@ -10,4 +12,8 @@ MACLength = {{ tinc_host_mac_length }}
 PMTU = {{ tinc_host_pmtu }}
 PMTUDiscovery = {{ tinc_host_pmtu_discovery }}
 Port = {{ tinc_host_port }}
-#Subnet = 
+{% if tinc_host_subnets %}
+{% for subnet in tinc_host_subnets %}
+Subnet = {{ subnet }}
+{% endfor %}
+{% endif %}

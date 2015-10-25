@@ -13,24 +13,42 @@
   when: ansible_distribution == "Ubuntu"
   tags: tinc
 
+- name: Create tinc network configuration directory
+  file: >
+    path=/etc/tinc/{{ tinc_netname }}
+    owner=root
+    group=root
+    mode=0755
+    state=directory
+  tags: tinc
+
 - name: Create tinc configuration
   template: >
     src=tinc.conf.j2
-    dest=/etc/tinc/tinc.conf
+    dest=/etc/tinc/{{ tinc_netname }}/tinc.conf
     owner=root
     group=root
     mode=0644
-  notifies: reload tinc
+  notify: reload tinc
+  tags: tinc
+
+- name: Create tinc hosts configuration directory
+  file: >
+    path=/etc/tinc/hosts
+    owner=root
+    group=root
+    mode=0755
+    state=directory
   tags: tinc
 
 - name: Create tinc host configuration
   template: >
     src=tinc.host.conf.j2
-    dest=/etc/tinc/hosts/tinc_host.conf
+    dest=/etc/tinc/hosts/tinc_host_{{ ansible_hostname }}.conf
     owner=root
     group=root
     mode=0644
-  notifies: reload tinc
+  notify: reload tinc
   tags: tinc
 
 - name: Create tinc nets.boot configuration
@@ -40,4 +58,8 @@
     owner=root
     group=root
     mode=0644
+  tags: tinc
+
+- name: Ensure tinc service is started and enabled on boot
+  service: name={{ tinc_service_name }} state=started enabled=yes
   tags: tinc
