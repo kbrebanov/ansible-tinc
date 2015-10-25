@@ -13,10 +13,6 @@
   when: ansible_distribution == "Ubuntu"
   tags: tinc
 
-- include: Alpine.yml
-  when: ansible_distribution == "Alpine"
-  tags: tinc
-
 - name: Create tinc configuration
   template: >
     src=tinc.conf.j2
